@@ -172,7 +172,7 @@ julius_void startReader(julius_char* program, julius_char* input, julius_char mo
 
 	ReaderPointer bufferp;		/* pointer to Buffer structure */
 	FILE* fileHandler;			/* input file handle */
-	julius_intg loadSize = 0;		/* the size of the file loaded in the buffer */
+	julius_intg loadSize = 0;	/* the size of the file loaded in the buffer */
 	julius_char symbol;			/* symbol read from input file */
 
 	/* Create buffer */

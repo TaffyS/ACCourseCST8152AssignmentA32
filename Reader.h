@@ -95,8 +95,10 @@ enum READER_MODE {
 #define READER_DEFAULT_FLAG 0x00 			/* (0000.0000)_2 = (000)_10 */
 /* TO_DO: BIT 7: FUL = Full */
 #define READER_FULL_FLAG 0x80				/* (1000.0000)_2 = (128)_10 */
+/* RESET*/
 #define READER_RESET_FLAG 0x7F				/* (0111.1111)_2 = (127)_10 */
-#define READER_CHECK_FLAG READER_FULL_FLAG		
+/* CHECK*/
+#define READER_CHECK_FLAG READER_FULL_FLAG	/* (0000.0000)_2 = (000)_10 */	
 /* TO_DO: BIT 6: EMP: Empty */
 #define READER_EMPTY_FLAG 0x40				/* (0100.0000)_2 = (64)_10 */
 /* TO_DO: BIT 5: REL = Relocation */
