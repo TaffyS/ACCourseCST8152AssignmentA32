@@ -38,7 +38,7 @@ project ("JuliusCompiler")
 add_executable (JuliusCompiler
 	"Compilers.h"	"Compilers.c"
 	"Reader.h"		"Reader.c"		"MainReader.c"
-#"	"Scanner.h"		"Scanner.c"		"MainScanner.c"
+	"Scanner.h"		"Scanner.c"		"MainScanner.c"
 #	"Parser.h"		"Parser.c"		"MainParser.c"
 )
 
