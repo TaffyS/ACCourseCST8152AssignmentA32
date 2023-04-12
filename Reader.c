@@ -572,7 +572,7 @@ julius_char readerGetChar(ReaderPointer const readerPointer) {
 julius_char* readerGetContent(ReaderPointer const readerPointer, julius_intg pos) {
 	/* TO_DO: Defensive programming */
 	if (!readerPointer || !readerPointer->content|| pos < 0 || pos >= readerPointer->position.wrte) {
-		return READER_ERROR;
+		return NULL;
 	}
 	/* TO_DO: Return content (string) */
 	return &(readerPointer->content[pos]);
