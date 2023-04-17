@@ -62,8 +62,8 @@
  */
  
 /* Logical constants - adapt for your language */
-#define JULIUS_TRUE  1
-#define JULIUS_FALSE 0
+#define HAILEY_TRUE  1
+#define HAILEY_FALSE 0
 
 /*
 ------------------------------------------------------------
@@ -74,16 +74,16 @@ NOTE: Some types may not be directly used by your language,
 */
 
 /* TO_DO: Define your typedefs */
-typedef void			julius_void;
-typedef char			julius_char;
-typedef int				julius_intg;
-typedef float			julius_real;
+typedef void			hailey_void;
+typedef char			hailey_char;
+typedef int				hailey_intg;
+typedef float			hailey_real;
 
-typedef unsigned char	julius_boln;
-typedef unsigned char	julius_byte;
+typedef unsigned char	hailey_boln;
+typedef unsigned char	hailey_byte;
 
-typedef long			julius_long;
-typedef double			julius_doub;
+typedef long			hailey_long;
+typedef double			hailey_doub;
 
 /*
 ------------------------------------------------------------
@@ -105,11 +105,11 @@ Main functions signatures
 (Code will be updated during next assignments)
 ------------------------------------------------------------
 */
-julius_intg mainReader(julius_intg argc, julius_char** argv);
+hailey_intg mainReader(hailey_intg argc, hailey_char** argv);
 /*
-julius_intg mainScanner(julius_intg argc, julius_char** argv);
-julius_intg mainParser(julius_intg argc, julius_char** argv);
+hailey_intg mainScanner(hailey_intg argc, hailey_char** argv);
+hailey_intg mainParser(hailey_intg argc, hailey_char** argv);
 */
-julius_void printLogo();
+hailey_void printLogo();
 
 #endif

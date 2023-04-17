@@ -80,11 +80,11 @@
  /* Global objects - variables */
 static ReaderPointer sourceBuffer; /* pointer to input (source) buffer */
 ReaderPointer stringLiteralTable; /* This buffer is used as a repository for string literals */
-julius_intg errorNumber;     /* Run-time error number = 0 by default (ANSI) */
+hailey_intg errorNumber;     /* Run-time error number = 0 by default (ANSI) */
 
 /* External objects */
-extern julius_intg syntaxErrorNumber /* number of syntax errors reported by the parser */;
-extern julius_intg line; /* source code line number - defined in scanner.c */
+extern hailey_intg syntaxErrorNumber /* number of syntax errors reported by the parser */;
+extern hailey_intg line; /* source code line number - defined in scanner.c */
 
 /*
  * -------------------------------------------------------------
@@ -93,13 +93,13 @@ extern julius_intg line; /* source code line number - defined in scanner.c */
  */
 
  /* Function declarations (prototypes) */
-extern julius_void startParser(julius_void);
-extern julius_intg startScanner(ReaderPointer sc_buf);
+extern hailey_void startParser(hailey_void);
+extern hailey_intg startScanner(ReaderPointer sc_buf);
 
-static julius_void printParserError(julius_char* fmt, ...);
-static julius_void displayParser(ReaderPointer ptrBuffer);
-static julius_long getParserFileSize(julius_char* fname);
-static julius_void callGarbageCollector(julius_void);
+static hailey_void printParserError(hailey_char* fmt, ...);
+static hailey_void displayParser(ReaderPointer ptrBuffer);
+static hailey_long getParserFileSize(hailey_char* fname);
+static hailey_void callGarbageCollector(hailey_void);
 
 
 /*
@@ -112,10 +112,10 @@ static julius_void callGarbageCollector(julius_void);
 ***********************************************************
 */
 
-julius_intg mainParser(julius_intg argc, julius_char** argv) {
+hailey_intg mainParser(hailey_intg argc, hailey_char** argv) {
 
 	FILE* fi;       /* input file handle */
-	julius_intg loadsize = 0; /*the size of the file loaded in the buffer */
+	hailey_intg loadsize = 0; /*the size of the file loaded in the buffer */
 
 	/*check for correct arrguments - source file name */
 	if (argc <= 1) {
@@ -190,12 +190,12 @@ julius_intg mainParser(julius_intg argc, julius_char** argv) {
 ************************************************************
 */
 
-julius_void printParserError(julius_char* fmt, ...) {
+hailey_void printParserError(hailey_char* fmt, ...) {
 
 	va_list ap;
 	va_start(ap, fmt);
 
-	(julius_void)vfprintf(stderr, fmt, ap);
+	(hailey_void)vfprintf(stderr, fmt, ap);
 	va_end(ap);
 
 	/* Move to new line */
@@ -213,9 +213,9 @@ julius_void printParserError(julius_char* fmt, ...) {
 ************************************************************
 */
 
-julius_long getParserFileSize(julius_char* fname) {
+hailey_long getParserFileSize(hailey_char* fname) {
 	FILE* input;
-	julius_long flength;
+	hailey_long flength;
 	input = fopen(fname, "r");
 	if (input == NULL) {
 		printParserError("%s%s", "Cannot open file: ", fname);
@@ -235,7 +235,7 @@ julius_long getParserFileSize(julius_char* fname) {
 ************************************************************
 */
 
-julius_void displayParser(ReaderPointer ptrBuffer) {
+hailey_void displayParser(ReaderPointer ptrBuffer) {
 	printf("\nPrinting input buffer parameters:\n\n");
 	printf("The capacity of the buffer is:  %d\n", readerGetSize(ptrBuffer));
 	printf("The current size of the buffer is:  %d\n", readerGetPosWrte(ptrBuffer));
@@ -251,7 +251,7 @@ julius_void displayParser(ReaderPointer ptrBuffer) {
 ************************************************************
 */
 
-julius_void callGarbageCollector(julius_void) {
+hailey_void callGarbageCollector(hailey_void) {
 	if (syntaxErrorNumber)
 		printf("\nSyntax errors: %d\n", syntaxErrorNumber);
 	printf("\nCollecting garbage...\n");

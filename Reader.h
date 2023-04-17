@@ -114,48 +114,48 @@ enum READER_MODE {
 
 /* Offset declaration */
 typedef struct position {
-	julius_intg mark;			/* the offset to the mark position (in chars) */
-	julius_intg read;			/* the offset to the get a char position (in chars) */
-	julius_intg wrte;			/* the offset to the add chars (in chars) */
+	hailey_intg mark;			/* the offset to the mark position (in chars) */
+	hailey_intg read;			/* the offset to the get a char position (in chars) */
+	hailey_intg wrte;			/* the offset to the add chars (in chars) */
 } Position;
 
 /* Buffer structure */
 typedef struct bufferReader {
-	julius_char*	content;			/* pointer to the beginning of character array (character buffer) */
-	julius_intg		size;				/* current dynamic memory size (in bytes) allocated to character buffer */
-	julius_intg		increment;			/* character array increment factor */
-	julius_intg		mode;				/* operational mode indicator */
-	julius_byte		flags;				/* contains character array reallocation flag and end-of-buffer flag */
+	hailey_char*	content;			/* pointer to the beginning of character array (character buffer) */
+	hailey_intg		size;				/* current dynamic memory size (in bytes) allocated to character buffer */
+	hailey_intg		increment;			/* character array increment factor */
+	hailey_intg		mode;				/* operational mode indicator */
+	hailey_byte		flags;				/* contains character array reallocation flag and end-of-buffer flag */
 	Position		position;			/* Offset / position field */
-	julius_intg		histogram[NCHAR];	/* Statistics of chars */
-	julius_intg		numReaderErrors;	/* Number of errors from Reader */
+	hailey_intg		histogram[NCHAR];	/* Statistics of chars */
+	hailey_intg		numReaderErrors;	/* Number of errors from Reader */
 } BufferReader, * ReaderPointer;
 
 /* FUNCTIONS DECLARATION:  .................................. */
 /* General Operations */
-ReaderPointer	readerCreate		(julius_intg, julius_intg, julius_intg);
-ReaderPointer	readerAddChar		(ReaderPointer const, julius_char);
-julius_boln		readerClear		    (ReaderPointer const);
-julius_boln		readerFree		    (ReaderPointer const);
-julius_boln		readerIsFull		(ReaderPointer const);
-julius_boln		readerIsEmpty		(ReaderPointer const);
-julius_boln		readerSetMark		(ReaderPointer const, julius_intg);
-julius_intg		readerPrint		    (ReaderPointer const);
-julius_intg		readerLoad			(ReaderPointer const, FILE* const);
-julius_boln		readerRecover		(ReaderPointer const);
-julius_boln		readerRetract		(ReaderPointer const);
-julius_boln		readerRestore		(ReaderPointer const);
+ReaderPointer	readerCreate		(hailey_intg, hailey_intg, hailey_intg);
+ReaderPointer	readerAddChar		(ReaderPointer const, hailey_char);
+hailey_boln		readerClear		    (ReaderPointer const);
+hailey_boln		readerFree		    (ReaderPointer const);
+hailey_boln		readerIsFull		(ReaderPointer const);
+hailey_boln		readerIsEmpty		(ReaderPointer const);
+hailey_boln		readerSetMark		(ReaderPointer const, hailey_intg);
+hailey_intg		readerPrint		    (ReaderPointer const);
+hailey_intg		readerLoad			(ReaderPointer const, FILE* const);
+hailey_boln		readerRecover		(ReaderPointer const);
+hailey_boln		readerRetract		(ReaderPointer const);
+hailey_boln		readerRestore		(ReaderPointer const);
 /* Getters */
-julius_char		readerGetChar		(ReaderPointer const);
-julius_char*	readerGetContent	(ReaderPointer const, julius_intg);
-julius_intg		readerGetPosRead	(ReaderPointer const);
-julius_intg		readerGetPosWrte	(ReaderPointer const);
-julius_intg		readerGetPosMark	(ReaderPointer const);
-julius_intg		readerGetSize		(ReaderPointer const);
-julius_intg		readerGetInc		(ReaderPointer const);
-julius_intg		readerGetMode		(ReaderPointer const);
-julius_byte		readerGetFlags		(ReaderPointer const);
-julius_intg		readerShowStat		(ReaderPointer const);
-julius_intg		readerNumErrors		(ReaderPointer const);
+hailey_char		readerGetChar		(ReaderPointer const);
+hailey_char*	readerGetContent	(ReaderPointer const, hailey_intg);
+hailey_intg		readerGetPosRead	(ReaderPointer const);
+hailey_intg		readerGetPosWrte	(ReaderPointer const);
+hailey_intg		readerGetPosMark	(ReaderPointer const);
+hailey_intg		readerGetSize		(ReaderPointer const);
+hailey_intg		readerGetInc		(ReaderPointer const);
+hailey_intg		readerGetMode		(ReaderPointer const);
+hailey_byte		readerGetFlags		(ReaderPointer const);
+hailey_intg		readerShowStat		(ReaderPointer const);
+hailey_intg		readerNumErrors		(ReaderPointer const);
 
 #endif

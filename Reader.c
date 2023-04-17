@@ -83,7 +83,7 @@
 *************************************************************
 */
 
-ReaderPointer readerCreate(julius_intg size, julius_intg increment, julius_intg mode) {
+ReaderPointer readerCreate(hailey_intg size, hailey_intg increment, hailey_intg mode) {
 	ReaderPointer readerPointer;
 	/* TO_DO: Defensive programming */
 	/* TO_DO: Adjust the values according to parameters */
@@ -100,7 +100,7 @@ ReaderPointer readerCreate(julius_intg size, julius_intg increment, julius_intg 
 		return NULL;
 	}
 	
-	readerPointer->content = (julius_char*)malloc(size);
+	readerPointer->content = (hailey_char*)malloc(size);
 	if (!readerPointer) {
 		return NULL;
 	}
@@ -155,9 +155,9 @@ ReaderPointer readerCreate(julius_intg size, julius_intg increment, julius_intg 
 *************************************************************
 */
 
-ReaderPointer readerAddChar(ReaderPointer const readerPointer, julius_char ch) {
-	julius_char* tempReader = NULL;
-	julius_intg newSize = 0;
+ReaderPointer readerAddChar(ReaderPointer const readerPointer, hailey_char ch) {
+	hailey_char* tempReader = NULL;
+	hailey_intg newSize = 0;
 	/* TO_DO: Defensive programming: check buffer and valid char (increment numReaderErrors) */
 	if (!readerPointer) {
 		return NULL;
@@ -166,7 +166,7 @@ ReaderPointer readerAddChar(ReaderPointer const readerPointer, julius_char ch) {
 	readerPointer->flags &= READER_RESET_FLAG;
 
 	/* TO_DO: Test the inclusion of chars */
-	if (readerPointer->position.wrte * (julius_intg)sizeof(julius_char) < readerPointer->size) {
+	if (readerPointer->position.wrte * (hailey_intg)sizeof(hailey_char) < readerPointer->size) {
 		/* TO_DO: This buffer is NOT full */
 	} else {
 		/* TO_DO: Reset Full flag */
@@ -205,7 +205,7 @@ ReaderPointer readerAddChar(ReaderPointer const readerPointer, julius_char ch) {
 		}
 		/* TO_DO: Defensive programming */
 		/* TO_DO: Check Relocation */
-		tempReader = (julius_char*)realloc(readerPointer->content, newSize);
+		tempReader = (hailey_char*)realloc(readerPointer->content, newSize);
 		if (!tempReader) {
 			return NULL;
 		}
@@ -243,10 +243,10 @@ ReaderPointer readerAddChar(ReaderPointer const readerPointer, julius_char ch) {
 *	- Adjust for your LANGUAGE.
 *************************************************************
 */
-julius_boln readerClear(ReaderPointer const readerPointer) {
+hailey_boln readerClear(ReaderPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
 	if (!readerPointer) {
-		return JULIUS_FALSE;
+		return HAILEY_FALSE;
 		/* Reset offsets */
 		readerPointer->position.mark= 0;
 		readerPointer->position.read = 0;
@@ -254,7 +254,7 @@ julius_boln readerClear(ReaderPointer const readerPointer) {
 		readerPointer->flags = READER_RESET_FLAG;
 	}
 	/* TO_DO: Adjust flags original */
-	return JULIUS_TRUE;
+	return HAILEY_TRUE;
 }
 
 /*
@@ -271,15 +271,15 @@ julius_boln readerClear(ReaderPointer const readerPointer) {
 *	- Adjust for your LANGUAGE.
 *************************************************************
 */
-julius_boln readerFree(ReaderPointer const readerPointer) {
+hailey_boln readerFree(ReaderPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
 	if (!readerPointer) {
-		return JULIUS_FALSE;
+		return HAILEY_FALSE;
 	}
 	/* TO_DO: Free pointers */
 	free(readerPointer->content);
 	free(readerPointer);
-	return JULIUS_TRUE;
+	return HAILEY_TRUE;
 }
 
 /*
@@ -296,17 +296,17 @@ julius_boln readerFree(ReaderPointer const readerPointer) {
 *	- Adjust for your LANGUAGE.
 *************************************************************
 */
-julius_boln readerIsFull(ReaderPointer const readerPointer) {
+hailey_boln readerIsFull(ReaderPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
 	if (!readerPointer) {
-		return JULIUS_FALSE;
+		return HAILEY_FALSE;
 	}
 	/* TO_DO: Check flag if buffer is FUL */
 	if ((readerPointer->flags & READER_CHECK_FLAG) == READER_FULL_FLAG) {
-		return JULIUS_TRUE;  /* Buffer is full */
+		return HAILEY_TRUE;  /* Buffer is full */
 	}
 	else {
-		return JULIUS_FALSE; /* Buffer is not full */
+		return HAILEY_FALSE; /* Buffer is not full */
 	}
 }
 
@@ -325,17 +325,17 @@ julius_boln readerIsFull(ReaderPointer const readerPointer) {
 *	- Adjust for your LANGUAGE.
 *************************************************************
 */
-julius_boln readerIsEmpty(ReaderPointer const readerPointer) {
+hailey_boln readerIsEmpty(ReaderPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
 	if (!readerPointer) {
-		return JULIUS_FALSE;
+		return HAILEY_FALSE;
 	}
 	/* TO_DO: Check flag if buffer is EMP */
 	if ((readerPointer->flags & READER_CHECK_FLAG) == READER_EMPTY_FLAG) {
-		return JULIUS_TRUE;  /* Buffer is empty */
+		return HAILEY_TRUE;  /* Buffer is empty */
 	}
 	else {
-		return JULIUS_FALSE; /* Buffer is not empty */
+		return HAILEY_FALSE; /* Buffer is not empty */
 	}
 }
 
@@ -354,14 +354,14 @@ julius_boln readerIsEmpty(ReaderPointer const readerPointer) {
 *	- Adjust for your LANGUAGE.
 *************************************************************
 */
-julius_boln readerSetMark(ReaderPointer const readerPointer, julius_intg mark) {
+hailey_boln readerSetMark(ReaderPointer const readerPointer, hailey_intg mark) {
 	/* TO_DO: Defensive programming */
 	if (!readerPointer || mark<0 || mark > readerPointer->position.wrte) {
-		return JULIUS_FALSE;
+		return HAILEY_FALSE;
 	}
 	/* TO_DO: Adjust mark */
 	readerPointer->position.mark = mark;
-	return JULIUS_TRUE;
+	return HAILEY_TRUE;
 }
 
 
@@ -379,9 +379,9 @@ julius_boln readerSetMark(ReaderPointer const readerPointer, julius_intg mark) {
 *	- Adjust for your LANGUAGE.
 *************************************************************
 */
-julius_intg readerPrint(ReaderPointer const readerPointer) {
-	julius_intg cont = 0;
-	julius_char c;
+hailey_intg readerPrint(ReaderPointer const readerPointer) {
+	hailey_intg cont = 0;
+	hailey_char c;
 	/* TO_DO: Defensive programming (including invalid chars) */
 	if (!readerPointer) {
 		return  READER_ERROR;
@@ -412,14 +412,14 @@ julius_intg readerPrint(ReaderPointer const readerPointer) {
 *	- Adjust for your LANGUAGE.
 *************************************************************
 */
-julius_intg readerLoad(ReaderPointer const readerPointer, FILE* const fileDescriptor) {
-	julius_intg size = 0;
-	julius_char c;
+hailey_intg readerLoad(ReaderPointer const readerPointer, FILE* const fileDescriptor) {
+	hailey_intg size = 0;
+	hailey_char c;
 	/* TO_DO: Defensive programming */
 	if (!readerPointer || !fileDescriptor) {
 		return  READER_ERROR;
 	}
-	c = (julius_char)fgetc(fileDescriptor);
+	c = (hailey_char)fgetc(fileDescriptor);
 	while (!feof(fileDescriptor)) {
 		if (!readerAddChar(readerPointer, c)) {
 			ungetc(c, fileDescriptor);
@@ -452,16 +452,16 @@ julius_intg readerLoad(ReaderPointer const readerPointer, FILE* const fileDescri
 *	- Adjust for your LANGUAGE.
 *************************************************************
 */
-julius_boln readerRecover(ReaderPointer const readerPointer) {
+hailey_boln readerRecover(ReaderPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
 	if (!readerPointer) {
-		return JULIUS_FALSE;
+		return HAILEY_FALSE;
 	}
 	/* TO_DO: Recover positions */
 	readerPointer->position.read = 0;
 	readerPointer->position.mark = 0;
 	//Read the specification
-	return JULIUS_TRUE;
+	return HAILEY_TRUE;
 }
 
 
@@ -479,18 +479,18 @@ julius_boln readerRecover(ReaderPointer const readerPointer) {
 *	- Adjust for your LANGUAGE.
 *************************************************************
 */
-julius_boln readerRetract(ReaderPointer const readerPointer) {
+hailey_boln readerRetract(ReaderPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
 	if (!readerPointer) {
-		return JULIUS_FALSE;
+		return HAILEY_FALSE;
 	}
 	/* TO_DO: Retract (return 1 pos read) */
 	if (readerPointer->position.read > 0) {
 		readerPointer->position.read--;
-		return JULIUS_TRUE;
+		return HAILEY_TRUE;
 	}
 	else {
-		return JULIUS_FALSE;
+		return HAILEY_FALSE;
 	}
 }
 
@@ -509,14 +509,14 @@ julius_boln readerRetract(ReaderPointer const readerPointer) {
 *	- Adjust for your LANGUAGE.
 *************************************************************
 */
-julius_boln readerRestore(ReaderPointer const readerPointer) {
+hailey_boln readerRestore(ReaderPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
 	if (!readerPointer) {
-		return JULIUS_FALSE;
+		return HAILEY_FALSE;
 	}
 	/* TO_DO: Restore positions (read/mark) */
 	readerPointer->position.read = readerPointer->position.mark;
-	return JULIUS_TRUE;
+	return HAILEY_TRUE;
 }
 
 
@@ -535,7 +535,7 @@ julius_boln readerRestore(ReaderPointer const readerPointer) {
 *	- Adjust for your LANGUAGE.
 *************************************************************
 */
-julius_char readerGetChar(ReaderPointer const readerPointer) {
+hailey_char readerGetChar(ReaderPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
 	if (!readerPointer) {
 		return READER_ERROR;
@@ -569,7 +569,7 @@ julius_char readerGetChar(ReaderPointer const readerPointer) {
 *	- Adjust for your LANGUAGE.
 *************************************************************
 */
-julius_char* readerGetContent(ReaderPointer const readerPointer, julius_intg pos) {
+hailey_char* readerGetContent(ReaderPointer const readerPointer, hailey_intg pos) {
 	/* TO_DO: Defensive programming */
 	if (!readerPointer || !readerPointer->content|| pos < 0 || pos >= readerPointer->position.wrte) {
 		return NULL;
@@ -594,7 +594,7 @@ julius_char* readerGetContent(ReaderPointer const readerPointer, julius_intg pos
 *	- Adjust for your LANGUAGE.
 *************************************************************
 */
-julius_intg readerGetPosRead(ReaderPointer const readerPointer) {
+hailey_intg readerGetPosRead(ReaderPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
 	if (!readerPointer) {
 		return READER_ERROR;
@@ -618,7 +618,7 @@ julius_intg readerGetPosRead(ReaderPointer const readerPointer) {
 *	- Adjust for your LANGUAGE.
 *************************************************************
 */
-julius_intg readerGetPosWrte(ReaderPointer const readerPointer) {
+hailey_intg readerGetPosWrte(ReaderPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
 	if (!readerPointer) {
 		return READER_ERROR;
@@ -643,7 +643,7 @@ julius_intg readerGetPosWrte(ReaderPointer const readerPointer) {
 *	- Adjust for your LANGUAGE.
 *************************************************************
 */
-julius_intg readerGetPosMark(ReaderPointer const readerPointer) {
+hailey_intg readerGetPosMark(ReaderPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
 	if (!readerPointer) {
 		return READER_ERROR;
@@ -667,7 +667,7 @@ julius_intg readerGetPosMark(ReaderPointer const readerPointer) {
 *	- Adjust for your LANGUAGE.
 *************************************************************
 */
-julius_intg readerGetMode(ReaderPointer const readerPointer) {
+hailey_intg readerGetMode(ReaderPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
 	if (!readerPointer) {
 		return READER_ERROR;
@@ -690,7 +690,7 @@ julius_intg readerGetMode(ReaderPointer const readerPointer) {
 *	- Adjust for your LANGUAGE.
 *************************************************************
 */
-julius_intg readerGetSize(ReaderPointer const readerPointer) {
+hailey_intg readerGetSize(ReaderPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
 	if (!readerPointer) {
 		return READER_ERROR;
@@ -713,7 +713,7 @@ julius_intg readerGetSize(ReaderPointer const readerPointer) {
 *	- Adjust for your LANGUAGE.
 *************************************************************
 */
-julius_intg readerGetInc(ReaderPointer const readerPointer) {
+hailey_intg readerGetInc(ReaderPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
 	if (!readerPointer) {
 		return READER_ERROR;
@@ -736,7 +736,7 @@ julius_intg readerGetInc(ReaderPointer const readerPointer) {
 *	- Adjust for your LANGUAGE.
 *************************************************************
 */
-julius_byte readerGetFlags(ReaderPointer const readerPointer) {
+hailey_byte readerGetFlags(ReaderPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
 	if (!readerPointer) {
 		return READER_DEFAULT_FLAG;
@@ -759,7 +759,7 @@ julius_byte readerGetFlags(ReaderPointer const readerPointer) {
 *	- Adjust for your LANGUAGE.
 *************************************************************
 */
-julius_intg readerShowStat(ReaderPointer const readerPointer) {
+hailey_intg readerShowStat(ReaderPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
 	if (!readerPointer) {
 		return READER_ERROR;
@@ -791,14 +791,14 @@ julius_intg readerShowStat(ReaderPointer const readerPointer) {
 *	- Adjust for your LANGUAGE.
 *************************************************************
 */
-julius_intg readerNumErrors(ReaderPointer const readerPointer) {
+hailey_intg readerNumErrors(ReaderPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
 	if (!readerPointer) {
 		return READER_ERROR;
 	}
 	/* Count number of errors */
-	julius_intg count = 0;
-	for (julius_intg i = 0; i < readerPointer->position.wrte; i++) {
+	hailey_intg count = 0;
+	for (hailey_intg i = 0; i < readerPointer->position.wrte; i++) {
 		if (readerPointer->content[i] < 0 || readerPointer->content[i] >= NCHAR) {
 			count++;
 		}

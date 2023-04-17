@@ -63,7 +63,7 @@
 #include <limits.h>  /* integer types constants */
 #include <float.h>   /* floating-point types constants */
 
-/* #define NDEBUG        to suppress assert() call */
+  /* #define NDEBUG        to suppress assert() call */
 #include <assert.h>  /* assert() prototype */
 
 /* project header files */
@@ -89,13 +89,13 @@ TO_DO: Global vars definitions
 /* Global objects - variables */
 /* This buffer is used as a repository for string literals. */
 extern ReaderPointer stringLiteralTable;	/* String literal table */
-julius_intg line;								/* Current line number of the source code */
-extern julius_intg errorNumber;				/* Defined in platy_st.c - run-time error number */
+hailey_intg line;								/* Current line number of the source code */
+extern hailey_intg errorNumber;				/* Defined in platy_st.c - run-time error number */
 
-extern julius_intg stateType[];
-extern julius_char* keywordTable[];
+extern hailey_intg stateType[];
+extern hailey_char* keywordTable[];
 extern PTR_ACCFUN finalStateTable[];
-extern julius_intg transitionTable[][TABLE_COLUMNS];
+extern hailey_intg transitionTable[][TABLE_COLUMNS];
 
 /* Local(file) global objects - variables */
 static ReaderPointer lexemeBuffer;			/* Pointer to temporary lexeme buffer */
@@ -109,7 +109,7 @@ static ReaderPointer sourceBuffer;			/* Pointer to input source buffer */
  */
  /* TO_DO: Follow the standard and adjust datatypes */
 
-julius_intg startScanner(ReaderPointer psc_buf) {
+hailey_intg startScanner(ReaderPointer psc_buf) {
 	/* in case the buffer has been read previously  */
 	readerRecover(psc_buf);
 	readerClear(stringLiteralTable);
@@ -124,25 +124,25 @@ julius_intg startScanner(ReaderPointer psc_buf) {
  *		Main function of buffer, responsible to classify a char (or sequence
  *		of chars). In the first part, a specific sequence is detected (reading
  *		from buffer). In the second part, a pattern (defined by Regular Expression)
- *		is recognized and the appropriate function is called (related to final states 
+ *		is recognized and the appropriate function is called (related to final states
  *		in the Transition Diagram).
  ***********************************************************
  */
 
-Token tokenizer(julius_void) {
+Token tokenizer(hailey_void) {
 
 	/* TO_DO: Follow the standard and adjust datatypes */
 
 	Token currentToken = { 0 }; /* token to return after pattern recognition. Set all structure members to 0 */
-	julius_char c;	/* input symbol */
-	julius_intg state = 0;		/* initial state of the FSM */
-	julius_intg lexStart;		/* start offset of a lexeme in the input char buffer (array) */
-	julius_intg lexEnd;		/* end offset of a lexeme in the input char buffer (array)*/
+	hailey_char c;	/* input symbol */
+	hailey_intg state = 0;		/* initial state of the FSM */
+	hailey_intg lexStart;		/* start offset of a lexeme in the input char buffer (array) */
+	hailey_intg lexEnd;		/* end offset of a lexeme in the input char buffer (array)*/
 
-	julius_intg lexLength;		/* token length */
-	julius_intg i;				/* counter */
-	julius_char newc;			/* new char */
-	
+	hailey_intg lexLength;		/* token length */
+	hailey_intg i;				/* counter */
+	hailey_char newc;			/* new char */
+
 	while (1) { /* endless loop broken by token returns it will generate a warning */
 		c = readerGetChar(sourceBuffer);
 
@@ -155,7 +155,7 @@ Token tokenizer(julius_void) {
 		/* TO_DO: All patterns that do not require accepting functions */
 		switch (c) {
 
-		/* Cases for spaces */
+			/* Cases for spaces */
 		case ' ':
 		case '\t':
 		case '\f':
@@ -164,7 +164,7 @@ Token tokenizer(julius_void) {
 			line++;
 			break;
 
-		/* Cases for symbols */
+			/* Cases for symbols */
 		case ';':
 			currentToken.code = EOS_T;
 			return currentToken;
@@ -180,7 +180,7 @@ Token tokenizer(julius_void) {
 		case '}':
 			currentToken.code = RBR_T;
 			return currentToken;
-		/* Comments */
+			/* Comments */
 		case '#':
 			newc = readerGetChar(sourceBuffer);
 			do {
@@ -194,7 +194,7 @@ Token tokenizer(julius_void) {
 				}
 			} while (c != '#' && c != CHARSEOF0 && c != CHARSEOF255);
 			break;
-		/* Cases for END OF FILE */
+			/* Cases for END OF FILE */
 		case CHARSEOF0:
 			currentToken.code = SEOF_T;
 			currentToken.attribute.seofType = SEOF_0;
@@ -204,13 +204,13 @@ Token tokenizer(julius_void) {
 			currentToken.attribute.seofType = SEOF_255;
 			return currentToken;
 
-		/* ------------------------------------------------------------------------
-			Part 2: Implementation of Finite State Machine (DFA) or Transition Table driven Scanner
-			Note: Part 2 must follow Part 1 to catch the illegal symbols
-			-----------------------------------------------------------------------
-		*/
+			/* ------------------------------------------------------------------------
+				Part 2: Implementation of Finite State Machine (DFA) or Transition Table driven Scanner
+				Note: Part 2 must follow Part 1 to catch the illegal symbols
+				-----------------------------------------------------------------------
+			*/
 
-		/* TO_DO: Adjust / check the logic for your language */
+			/* TO_DO: Adjust / check the logic for your language */
 
 		default: // general case
 			state = nextState(state, c);
@@ -226,7 +226,7 @@ Token tokenizer(julius_void) {
 				readerRetract(sourceBuffer);
 			lexEnd = readerGetPosRead(sourceBuffer);
 			lexLength = lexEnd - lexStart;
-			lexemeBuffer = readerCreate((julius_intg)lexLength + 2, 0, MODE_FIXED);
+			lexemeBuffer = readerCreate((hailey_intg)lexLength + 2, 0, MODE_FIXED);
 			if (!lexemeBuffer) {
 				fprintf(stderr, "Scanner error: Can not create buffer\n");
 				exit(1);
@@ -271,9 +271,9 @@ Token tokenizer(julius_void) {
  */
  /* TO_DO: Just change the datatypes */
 
-julius_intg nextState(julius_intg state, julius_char c) {
-	julius_intg col;
-	julius_intg next;
+hailey_intg nextState(hailey_intg state, hailey_char c) {
+	hailey_intg col;
+	hailey_intg next;
 	col = nextClass(c);
 	next = transitionTable[state][col];
 	if (DEBUG)
@@ -296,13 +296,12 @@ julius_intg nextState(julius_intg state, julius_char c) {
 	* For instance, a letter should return the column for letters, etc.
  ***********************************************************
  */
-/* TO_DO: Use your column configuration */
+ /* TO_DO: Use your column configuration */
 
-/* Adjust the logic to return next column in TT */
-/*	[A-z](0), [0-9](1),	_(2), &(3), "(4), SEOF(5), other(6) */
-
-julius_intg nextClass(julius_char c) {
-	julius_intg val = -1;
+ /* Adjust the logic to return next column in TT /
+/ A-z, 0-9, _(2), &(3), '(4), .(5), SEOF(6), other(7) */
+hailey_intg nextClass(hailey_char c) {
+	hailey_intg val = -1;
 	switch (c) {
 	case CHRCOL2:
 		val = 2;
@@ -313,9 +312,12 @@ julius_intg nextClass(julius_char c) {
 	case CHRCOL4:
 		val = 4;
 		break;
+	case CHRCOL5:
+		val = 5;
+		break;
 	case CHARSEOF0:
 	case CHARSEOF255:
-		val = 5;
+		val = 6;
 		break;
 	default:
 		if (isalpha(c))
@@ -323,27 +325,26 @@ julius_intg nextClass(julius_char c) {
 		else if (isdigit(c))
 			val = 1;
 		else
-			val = 6;
+			val = 7;
 	}
 	return val;
 }
 
+/*
+ ************************************************************
+ * Acceptance State Function IL
+ *		Function responsible to identify IL (integer literals).
+ * - It is necessary respect the limit (ex: 2-byte integer in C).
+ * - In the case of larger lexemes, error shoul be returned.
+ * - Only first ERR_LEN characters are accepted and eventually,
+ *   additional three dots (...) should be put in the output.
+ ***********************************************************
+ */
+ /* TO_DO: Adjust the function for IL */
 
- /*
-  ************************************************************
-  * Acceptance State Function IL
-  *		Function responsible to identify IL (integer literals).
-  * - It is necessary respect the limit (ex: 2-byte integer in C).
-  * - In the case of larger lexemes, error shoul be returned.
-  * - Only first ERR_LEN characters are accepted and eventually,
-  *   additional three dots (...) should be put in the output.
-  ***********************************************************
-  */
-  /* TO_DO: Adjust the function for IL */
-
-Token funcIL(julius_char lexeme[]) {
+Token funcIL(hailey_char lexeme[]) {
 	Token currentToken = { 0 };
-	julius_long tlong;
+	hailey_long tlong;
 	if (lexeme[0] != '\0' && strlen(lexeme) > NUM_LEN) {
 		currentToken = (*finalStateTable[ESNR])(lexeme);
 	}
@@ -351,7 +352,7 @@ Token funcIL(julius_char lexeme[]) {
 		tlong = atol(lexeme);
 		if (tlong >= 0 && tlong <= SHRT_MAX) {
 			currentToken.code = INL_T;
-			currentToken.attribute.intValue = (julius_intg)tlong;
+			currentToken.attribute.intValue = (hailey_intg)tlong;
 		}
 		else {
 			currentToken = (*finalStateTable[ESNR])(lexeme);
@@ -359,6 +360,48 @@ Token funcIL(julius_char lexeme[]) {
 	}
 	return currentToken;
 }
+
+
+/*
+  ************************************************************
+  * Acceptance State Function FL
+  *		Function responsible to identify FL (Floating literals).
+  * - 3.16 textbook page 133 example
+  * - Should correctly identify the floating literals with or without
+  *   optional fractions.
+  * - Only first ERR_LEN characters are accepted and eventually,
+  *   additional three dots (...) should be put in the output.
+  ***********************************************************
+  */
+
+Token funcFL(hailey_char lexeme[]) {
+	Token currentToken = { 0 };
+	hailey_real treal;
+	char* endptr;
+
+	if (lexeme[0] != '\0' && strlen(lexeme) > NUM_LEN) {
+		currentToken = (*finalStateTable[ESNR])(lexeme);
+	}
+	else {
+		if (strchr(lexeme, '.') != NULL) {
+			treal = strtof(lexeme, &endptr);
+
+			if (treal >= FLT_MIN && treal <= FLT_MAX) {
+				currentToken.code = FLO_T;
+				currentToken.attribute.floatValue = (hailey_real)treal;
+			}
+			else {
+				currentToken = (*finalStateTable[ESNR])(lexeme);
+			}
+		}
+		else {
+			currentToken = (*finalStateTable[ESNR])(lexeme);
+		}
+	}
+
+	return currentToken;
+}
+
 
 
 /*
@@ -375,22 +418,22 @@ Token funcIL(julius_char lexeme[]) {
  */
  /* TO_DO: Adjust the function for ID */
 
-Token funcID(julius_char lexeme[]) {
+Token funcID(hailey_char lexeme[]) {
 	Token currentToken = { 0 };
 	size_t length = strlen(lexeme);
-	julius_char lastch = lexeme[length - 1];
-	julius_intg isID = JULIUS_FALSE;
+	hailey_char lastch = lexeme[length - 1];
+	hailey_intg isID = HAILEY_FALSE;
 	switch (lastch) {
-		case MNIDPREFIX:
-			currentToken.code = MNID_T;
-			isID = JULIUS_TRUE;
-			break;
-		default:
-			// Test Keyword
-			currentToken = funcKEY(lexeme);
-			break;
+	case MNIDPREFIX:
+		currentToken.code = MNID_T;
+		isID = HAILEY_TRUE;
+		break;
+	default:
+		// Test Keyword
+		currentToken = funcKEY(lexeme);
+		break;
 	}
-	if (isID == JULIUS_TRUE) {
+	if (isID == HAILEY_TRUE) {
 		strncpy(currentToken.attribute.idLexeme, lexeme, VID_LEN);
 		currentToken.attribute.idLexeme[VID_LEN] = CHARSEOF0;
 	}
@@ -402,17 +445,17 @@ Token funcID(julius_char lexeme[]) {
 ************************************************************
  * Acceptance State Function SL
  *		Function responsible to identify SL (string literals).
- * - The lexeme must be stored in the String Literal Table 
- *   (stringLiteralTable). You need to include the literals in 
+ * - The lexeme must be stored in the String Literal Table
+ *   (stringLiteralTable). You need to include the literals in
  *   this structure, using offsets. Remember to include \0 to
  *   separate the lexemes. Remember also to incremente the line.
  ***********************************************************
  */
-/* TO_DO: Adjust the function for SL */
+ /* TO_DO: Adjust the function for SL */
 
-Token funcSL(julius_char lexeme[]) {
+Token funcSL(hailey_char lexeme[]) {
 	Token currentToken = { 0 };
-	julius_intg i = 0, len = (julius_intg)strlen(lexeme);
+	hailey_intg i = 0, len = (hailey_intg)strlen(lexeme);
 	currentToken.attribute.contentString = readerGetPosWrte(stringLiteralTable);
 	for (i = 1; i < len - 1; i++) {
 		if (lexeme[i] == '\n')
@@ -443,9 +486,9 @@ Token funcSL(julius_char lexeme[]) {
  */
  /* TO_DO: Adjust the function for Keywords */
 
-Token funcKEY(julius_char lexeme[]) {
+Token funcKEY(hailey_char lexeme[]) {
 	Token currentToken = { 0 };
-	julius_intg kwindex = -1, j = 0;
+	hailey_intg kwindex = -1, j = 0;
 	for (j = 0; j < KWT_SIZE; j++)
 		if (!strcmp(lexeme, &keywordTable[j][0]))
 			kwindex = j;
@@ -472,9 +515,9 @@ Token funcKEY(julius_char lexeme[]) {
  */
  /* TO_DO: Adjust the function for Errors */
 
-Token funcErr(julius_char lexeme[]) {
+Token funcErr(hailey_char lexeme[]) {
 	Token currentToken = { 0 };
-	julius_intg i = 0, len = (julius_intg)strlen(lexeme);
+	hailey_intg i = 0, len = (hailey_intg)strlen(lexeme);
 	if (len > ERR_LEN) {
 		strncpy(currentToken.attribute.errLexeme, lexeme, ERR_LEN - 3);
 		currentToken.attribute.errLexeme[ERR_LEN - 3] = CHARSEOF0;
@@ -497,10 +540,10 @@ Token funcErr(julius_char lexeme[]) {
  ***********************************************************
  */
 
-julius_void printToken(Token t) {
+hailey_void printToken(Token t) {
 
 	/* External variables */
-	extern julius_char* keywordTable[]; /* link to keyword table in */
+	extern hailey_char* keywordTable[]; /* link to keyword table in */
 	extern numScannerErrors;			/* link to number of errors (defined in Scanner.h) */
 
 	switch (t.code) {
@@ -526,8 +569,14 @@ julius_void printToken(Token t) {
 		printf("MNID_T\t\t%s\n", t.attribute.idLexeme);
 		break;
 	case STR_T:
-		printf("STR_T\t\t%d\t ", (julius_intg)t.attribute.codeType);
-		printf("%s\n", readerGetContent(stringLiteralTable, (julius_intg)t.attribute.codeType));
+		printf("STR_T\t\t%d\t ", (hailey_intg)t.attribute.codeType);
+		printf("%s\n", readerGetContent(stringLiteralTable, (hailey_intg)t.attribute.codeType));
+		break;
+	case INL_T:
+		printf("INL_T\t\t%d\n", (hailey_intg)t.attribute.intValue);
+		break;
+	case FLO_T:
+		printf("FLO_T\t\t%f\n", (hailey_real)t.attribute.floatValue);
 		break;
 	case LPR_T:
 		printf("LPR_T\n");

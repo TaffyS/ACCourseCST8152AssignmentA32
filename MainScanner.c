@@ -94,10 +94,10 @@
 
  /* Global objects - variables (used in other codes as external) */
 ReaderPointer stringLiteralTable;	/* This buffer implements String Literal Table */
-julius_intg errorNumber;				/* Run-time error number = 0 by default (ANSI) */
+hailey_intg errorNumber;				/* Run-time error number = 0 by default (ANSI) */
 
 /* External objects */
-extern julius_intg line; /* Source code line numbers - defined in scanner.c */
+extern hailey_intg line; /* Source code line numbers - defined in scanner.c */
 extern Token tokenizer(sofia_nul);
 
 /*
@@ -105,10 +105,10 @@ extern Token tokenizer(sofia_nul);
  *  Function declarations
  * -------------------------------------------------------------
  */
-julius_void printScannerError(julius_char* fmt, ...);
-julius_void displayScanner(BufferReader* ptrBuffer);
-julius_long getScannerFilesize(julius_char* fname);
-julius_void printToken(Token t);
+hailey_void printScannerError(hailey_char* fmt, ...);
+hailey_void displayScanner(BufferReader* ptrBuffer);
+hailey_long getScannerFilesize(hailey_char* fname);
+hailey_void printToken(Token t);
 
 /*
 ************************************************************
@@ -120,12 +120,14 @@ julius_void printToken(Token t);
  ***********************************************************
  */
 
-julius_intg mainScanner(julius_intg argc, julius_char** argv) {
+hailey_intg mainScanner(hailey_intg argc, hailey_char** argv) {
 
-	ReaderPointer sourceBuffer;		/* Pointer to input (source) buffer */
-	FILE* fileHandler;				/* Input file handle */
-	Token currentToken;				/* Token produced by the scanner */
-	julius_intg loadSize = 0;		/* The size of the file loaded in the buffer */
+	ReaderPointer sourceBuffer;				/* Pointer to input (source) buffer */
+	FILE* fileHandler;						/* Input file handle */
+	Token currentToken;							/* Token produced by the scanner */
+	Token previousToken;						/* Previous token check*/
+	hailey_intg loadSize = 0;					/* The size of the file loaded in the buffer */
+	hailey_boln appendIntegers = HAILEY_FALSE;
 
 	numScannerErrors = 0;			/* Initializes the errors */
 
@@ -195,8 +197,22 @@ julius_intg mainScanner(julius_intg argc, julius_char** argv) {
 	printf("----------------------------------\n");
 	do {
 		currentToken = tokenizer();
-		printToken(currentToken);
+
+		if (appendIntegers && previousToken.code == INL_T && currentToken.code == INL_T) {
+			previousToken.attribute.intValue = previousToken.attribute.intValue * 10 + currentToken.attribute.intValue;
+		}
+		else {
+			if (appendIntegers) {
+				printToken(previousToken);
+			}
+			appendIntegers = HAILEY_TRUE;
+			previousToken = currentToken;
+		}
 	} while (currentToken.code != SEOF_T);
+
+	if (appendIntegers) {
+		printToken(previousToken);
+	}
 
 	/* Print String Literal Table if not empty */
 	printf("\nPrinting string table...\n");
@@ -227,7 +243,7 @@ julius_intg mainScanner(julius_intg argc, julius_char** argv) {
 ***********************************************************
 */
 
-julius_void printScannerError(julius_char* fmt, ...) {
+hailey_void printScannerError(hailey_char* fmt, ...) {
 	va_list ap;
 	va_start(ap, fmt);
 	(void)vfprintf(stderr, fmt, ap);
@@ -245,7 +261,7 @@ julius_void printScannerError(julius_char* fmt, ...) {
  ***********************************************************
  */
 
-julius_void displayScanner(BufferReader* ptrBuffer) {
+hailey_void displayScanner(BufferReader* ptrBuffer) {
 	printf("\nPrinting buffer parameters:\n\n");
 	printf("The capacity of the buffer is:  %d\n", readerGetSize(ptrBuffer));
 	printf("The current size of the buffer is:  %d\n", readerGetPosWrte(ptrBuffer));
@@ -264,9 +280,9 @@ julius_void displayScanner(BufferReader* ptrBuffer) {
  ***********************************************************
  */
 
-julius_long getScannerFilesize(julius_char* fname) {
+hailey_long getScannerFilesize(hailey_char* fname) {
 	FILE* fileInput;
-	julius_long fileLength;
+	hailey_long fileLength;
 	fileInput = fopen(fname, "r");
 	if (fileInput == NULL) {
 		printScannerError("%s%s", "Cannot open file: ", fname);

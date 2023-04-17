@@ -67,10 +67,10 @@
 /* Global vars */
 static Token lookahead;
 extern BufferReader* stringLiteralTable;
-extern julius_intg line;
+extern hailey_intg line;
 extern Token tokenizer();
-extern julius_char* keywordTable[];
-julius_intg syntaxErrorNumber = 0;
+extern hailey_char* keywordTable[];
+hailey_intg syntaxErrorNumber = 0;
 
 #define STR_LANGNAME	"Julius"
 #define LANG_WRTE		"print&"
@@ -91,25 +91,34 @@ enum KEYWORDS {
 	KW_then,
 	KW_else,
 	KW_while,
-	KW_do
+	KW_do,
+	KW_break,
+	KW_function,
+	KW_return,
+	KW_namespace,
+	KW_try,
+	KW_catch,
+	KW_finally,
+	KW_global,
+	KW_constant
 };
 
 /* Function definitions */
-julius_void startParser();
-julius_void matchToken(julius_intg, julius_intg);
-julius_void syncErrorHandler(julius_intg);
-julius_void printError();
+hailey_void startParser();
+hailey_void matchToken(hailey_intg, hailey_intg);
+hailey_void syncErrorHandler(hailey_intg);
+hailey_void printError();
 
 /* TO_DO: Place ALL non-terminal function declarations */
-julius_void codeSession();
-julius_void dataSession();
-julius_void optVarListDeclarations();
-julius_void optionalStatements();
-julius_void outputStatement();
-julius_void outputVariableList();
-julius_void program();
-julius_void statement();
-julius_void statements();
-julius_void statementsPrime();
+hailey_void codeSession();
+hailey_void dataSession();
+hailey_void optVarListDeclarations();
+hailey_void optionalStatements();
+hailey_void outputStatement();
+hailey_void outputVariableList();
+hailey_void program();
+hailey_void statement();
+hailey_void statements();
+hailey_void statementsPrime();
 
 #endif
